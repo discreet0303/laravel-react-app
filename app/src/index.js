@@ -2,20 +2,16 @@ import React, { Component } from 'react';
 import { 
     createAppContainer,
     createStackNavigator,
+    createSwitchNavigator,
     createBottomTabNavigator,
 } from 'react-navigation';
 
 // Screen
 import TestScreen from './components/TestScreen';
 
-// const AppNavigator = createStackNavigator({
-//     Home: {
-//         screen: TestScreen
-//     }
-// });
-// const AppContainer = createAppContainer(AppNavigator);
+import AuthLoadingScreen from './utils/AuthLoadingScreen';
 
-const TabNavigator = createBottomTabNavigator({
+const AppStack = createBottomTabNavigator({
     Home: {
         screen: TestScreen,
         params: { text: 'Home Screen' }
@@ -30,8 +26,23 @@ const TabNavigator = createBottomTabNavigator({
     },
 });
 
-const AppContainer = createAppContainer(TabNavigator);
+const AuthStack = createStackNavigator({ 
+    SignIn: {
+        screen: TestScreen,
+        params: { text: 'Auth Screen' }
+    },
+});
 
+
+const AuthFlows = createSwitchNavigator({
+    AuthLoading: AuthLoadingScreen,
+    App: AppStack,
+    Auth: AuthStack
+}, {
+    initialRouteName: 'AuthLoading',
+});
+
+const AppContainer = createAppContainer(AuthFlows);
 export default class App extends Component {
     render() {
         return (
