@@ -5,16 +5,46 @@ import {
     StyleSheet,
     TextInput,
     TouchableOpacity,
+    AsyncStorage
 } from 'react-native';
+
+import ApiCaller from '../ApiCaller';
 
 class SignInScreen extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            account: '',
-            password: ''
+            account: 'qqq@qq.com2',
+            password: 'aaaaaa'
         }
+    }
+
+    handleLogin = () => {
+        // ApiCaller.get('/api/getUsers', {
+        //     baseURL: ApiCaller.getHost(),
+        //     timeout: 100000,
+        //     headers: { Authorization: token }
+        // })
+        // .then(res => {
+        //     console.log(res)
+        // })
+        // .catch(err => console.log(err));
+
+        ApiCaller.post('/api/login', {
+            email: this.state.account,
+            password: this.state.password
+        }, {
+            baseURL: ApiCaller.getHost(),
+            timeout: 10000
+        })
+        .then(async res => {
+            console.log(res.data)
+            if (res.status == 200) {
+                await AsyncStorage.setItem('access_token', res.data.access_token);
+            }
+        })
+        .catch(err => console.log(err));
     }
 
     render() {
@@ -23,7 +53,7 @@ class SignInScreen extends Component {
                 <View style={{ height: 350, alignItems: 'center' }}>
                     <View style={style.inputContainer}>
                         <Text> Account </Text>
-                        <TextInput 
+                        <TextInput
                             style={style.textinput}
                             onChangeText={(account) => this.setState({account})}
                             value={this.state.account}
@@ -31,16 +61,21 @@ class SignInScreen extends Component {
                     </View>
                     <View style={style.inputContainer}>
                         <Text> Password </Text>
-                        <TextInput 
+                        <TextInput
                             style={style.textinput}
                             secureTextEntry={true}
                             onChangeText={(password) => this.setState({password})}
                             value={this.state.password}
                         />
                     </View>
-                    <TouchableOpacity style={style.loginBt}>
+                    <TouchableOpacity style={style.loginBt} onPress={this.handleLogin}>
                         <View>
                             <Text style={{color: 'white', fontSize: 20}}> Login </Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={style.loginBt} onPress={() => this.props.navigation.navigate('SignUp')}>
+                        <View>
+                            <Text style={{color: 'white', fontSize: 20}}> SignUp </Text>
                         </View>
                     </TouchableOpacity>
                 </View>

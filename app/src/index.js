@@ -11,6 +11,7 @@ import TestScreen from './components/TestScreen';
 
 import AuthLoadingScreen from './utils/AuthLoadingScreen';
 import SignInScreen from './containers/SignInScreen';
+import SignUpScreen from './containers/SignUpScreen';
 
 const AppStack = createBottomTabNavigator({
     Home: {
@@ -35,6 +36,12 @@ const AuthStack = createStackNavigator({
             header: null,
         }
     },
+    SignUp: {
+        screen: SignUpScreen,
+        navigationOptions: {
+            header: null,
+        }
+    }
 }, {
     initialRouteName: 'SignIn',
 });
