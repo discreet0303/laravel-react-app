@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
-
-import ApiCaller from '../ApiCaller';
+import {
+    Text,
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    AsyncStorage
+} from 'react-native'
 
 export default class TestScreen extends Component {
 
-    componentDidMount() {
-        (async () => {
-            const response = await ApiCaller.get('/api/test');
-            if (response.status === 200) {
-                console.log(response.data)
-            }
-        })();
+    handleLogout = async () => {
+        console.log('handleLogout');
+        await AsyncStorage.removeItem('access_token');
+        this.props.navigation.navigate('Auth');
     }
 
     render() {
@@ -23,6 +24,9 @@ export default class TestScreen extends Component {
                         text ? text : 'This is the init testing screen'
                     }
                 </Text>
+                <TouchableOpacity onPress={this.handleLogout}>
+                    <View style={{ height: 40, borderWidth: 2, width: '70%' }}><Text>Logout</Text></View>
+                </TouchableOpacity>
             </View>
         )
     }

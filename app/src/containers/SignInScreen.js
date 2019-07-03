@@ -39,8 +39,8 @@ class SignInScreen extends Component {
             timeout: 10000
         })
         .then(async res => {
+            console.log(res.data)
             if (res.status == 200) {
-                // console.log(res.data.access_token)
                 await AsyncStorage.setItem('access_token', res.data.access_token);
             }
         })
@@ -71,6 +71,11 @@ class SignInScreen extends Component {
                     <TouchableOpacity style={style.loginBt} onPress={this.handleLogin}>
                         <View>
                             <Text style={{color: 'white', fontSize: 20}}> Login </Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={style.loginBt} onPress={() => this.props.navigation.navigate('SignUp')}>
+                        <View>
+                            <Text style={{color: 'white', fontSize: 20}}> SignUp </Text>
                         </View>
                     </TouchableOpacity>
                 </View>
