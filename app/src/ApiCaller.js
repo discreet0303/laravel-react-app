@@ -1,26 +1,24 @@
 import axios from 'axios';
 
-const HOST = 'http://localhost:8000';
+const HOST = 'http://140.115.51.180:8000';
 
-const API_INSTANCE = axios.create({
+const defaultInstance = {
     baseURL: HOST,
     timeout: 100000,
-});
+}
 
 export default class ApiCaller {
-    static get(route, instance = API_INSTANCE) {
-        return instance.get(route);
+    static getHost() {
+        return HOST;
     }
 
-    static post(route, data, config, instance = API_INSTANCE) {
-        return instance.post(route, data, config);
+    static get(route, instance = defaultInstance, config = false) {
+        const request = axios.create(instance);
+        return request.get(route, config);
     }
 
-    // static update(route, data, instance = Api.defaultInstance) {
-    //     return instance.update('UPDATE', `${HOST}${route}`);
-    // }
-
-    // static delete(route, data, instance = API_INSTANCE) {
-    //     return instance.delete(API_ROUTE + route);
-    // }
+    static post(route, data, instance = defaultInstance, config = false) {
+        const request = axios.create(instance);
+        return request.post(route, data, config);
+    }
 }
